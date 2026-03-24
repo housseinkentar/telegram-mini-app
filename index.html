@@ -1,73 +1,80 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine's</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0f0f0f;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    .box {
-      background: #1c1c1c;
-      padding: 25px;
-      border-radius: 15px;
-      text-align: center;
-      width: 90%;
-      max-width: 320px;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(#d8f5d0, #bdecb6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    h2 {
-      margin-bottom: 10px;
-    }
+.container {
+  width: 90%;
+  max-width: 340px;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-    p {
-      color: #aaa;
-      font-size: 14px;
-    }
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: #2ea6ff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+.text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.btn {
+  margin-top: 20px;
+  background: #2ea6ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2>Valentine's</h2>
-  <p>Confirm that you are not a robot</p>
+<div class="container">
+  <div class="title">Valentine's</div>
 
-  <button onclick="verify()">✅ أنا لست روبوت</button>
+  <div class="text">
+    Para acceder a los archivos completamente gratis 💦<br><br>
+    👇 Confirma que no eres un robot
+  </div>
+
+  <button class="btn" onclick="verify()">👇 أنا لست روبوت</button>
 </div>
 
 <script>
-  const tg = window.Telegram.WebApp;
-  tg.ready();
-  tg.expand();
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
 
-  function verify() {
-    tg.sendData("verified");
-    tg.close();
-  }
+function verify() {
+  tg.sendData("verified");
+  tg.close();
+}
 </script>
 
 </body>
